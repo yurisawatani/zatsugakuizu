@@ -1,30 +1,92 @@
 package main
 
 import (
+	"image/color"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/examples/resources/fonts"
+	"github.com/hajimehoshi/ebiten/v2/text"
+	"github.com/yurisawatani/zatsugakuizu/sushi"
+	"golang.org/x/image/font"
+	"golang.org/x/image/font/opentype"
 )
 
-type Game struct{}
+const (
+	tate int = 5
+	yoko int = 8
+)
+
+var (
+	mPlus1Regular_ttf font.Face
+)
+
+func init() {
+	tt, err := opentype.Parse(fonts.MPlus1pRegular_ttf)
+	if err != nil {
+		log.Fatal(err)
+	}
+	ft, err := opentype.NewFace(tt, &opentype.FaceOptions{
+		Size:    24,
+		DPI:     72,
+		Hinting: font.HintingFull,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	mPlus1Regular_ttf = ft
+}
+
+type Game struct {
+	Nyannchudanyan sushi.Sushi
+	Wannwann       sushi.Sushi
+	Msg            string
+	count          int
+	Witch          bool
+}
 
 func (g *Game) Update() error {
+	g.count = g.count + 1
+	if g.count < 60 {
+		return nil
+	}
+	g.count = 0
+	if g.Witch {
+		g.Witch = false
+		g.Msg = g.Nyannchudanyan.Taberareru()
+	} else {
+		g.Witch = true
+		g.Msg = g.Wannwann.Taberareru()
+	}
 	return nil
 }
 
-func (g *Game) Draw(screen *"ebiten".Image) {
-	ebitenutil.DebugPrint(screen, "Hello, World!")
+func (g *Game) Draw(screen *ebiten.Image) {
+	text.Draw(screen, g.Msg, mPlus1Regular_ttf, 40, 120, color.White)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
-	return 320, 240
+	return outsideWidth / 2, outsideHeight / 2
 }
 
 func main() {
-	ebiten.SetWindowSize(640, 480)
-	ebiten.SetWindowTitle("Hello, World!")
-	if err := ebiten.RunGame(&Game{}); err != nil {
+	ebiten.SetWindowSize(yoko*100, tate*100)
+	ebiten.SetWindowTitle("F")
+	game := &Game{
+		Nyannchudanyan: sushi.Sushi{
+			Yakumi: "わさび",
+			Fish:   "まぐろの寿司",
+			Size:   8,
+			Weight: 50.0,
+		},
+		Wannwann: sushi.Sushi{
+			Yakumi: "ネギ",
+			Fish:   "かつおの寿司",
+			Size:   7,
+			Weight: 40.5,
+		},
+	}
+	if err := ebiten.RunGame(game); err != nil {
 		log.Fatal(err)
 	}
 }
