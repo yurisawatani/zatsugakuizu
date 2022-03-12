@@ -6,6 +6,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/examples/resources/fonts"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
 	"github.com/yurisawatani/zatsugakuizu/sushi"
 	"golang.org/x/image/font"
@@ -43,9 +44,11 @@ type Game struct {
 	Msg            string
 	count          int
 	Witch          bool
+	keys           []ebiten.Key
 }
 
 func (g *Game) Update() error {
+	g.keys = inpututil.AppendPressedKeys(g.keys[:0])
 	g.count = g.count + 1
 	if g.count < 60 {
 		return nil
@@ -62,7 +65,12 @@ func (g *Game) Update() error {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	text.Draw(screen, g.Msg, mPlus1Regular_ttf, 40, 120, color.White)
+	text.Draw(screen, g.Msg, mPlus1Regular_ttf, 60, 120, color.White)
+	for i, k := range g.keys {
+		posY := (i + 1) * 20
+		ka := k.String()
+		text.Draw(screen, ka, mPlus1Regular_ttf, 0, posY, color.White)
+	}
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
@@ -71,7 +79,7 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 
 func main() {
 	ebiten.SetWindowSize(yoko*100, tate*100)
-	ebiten.SetWindowTitle("F")
+	ebiten.SetWindowTitle("回転寿司")
 	game := &Game{
 		Nyannchudanyan: sushi.Sushi{
 			Yakumi: "わさび",
