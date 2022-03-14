@@ -67,9 +67,16 @@ func (g *Game) Update() error {
 func (g *Game) Draw(screen *ebiten.Image) {
 	text.Draw(screen, g.Msg, mPlus1Regular_ttf, 60, 120, color.White)
 	for i, k := range g.keys {
-		posY := (i + 1) * 20
+		posY := i + 90
+		posX := i + 192
 		ka := k.String()
-		text.Draw(screen, ka, mPlus1Regular_ttf, 0, posY, color.White)
+		color := color.RGBA{
+			R: 60,
+			G: 150,
+			B: 255,
+			A: 255,
+		}
+		text.Draw(screen, ka, mPlus1Regular_ttf, posY, posX, color)
 	}
 }
 
@@ -79,19 +86,19 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 
 func main() {
 	ebiten.SetWindowSize(yoko*100, tate*100)
-	ebiten.SetWindowTitle("回転寿司")
+	ebiten.SetWindowTitle("雑学")
 	game := &Game{
 		Nyannchudanyan: sushi.Sushi{
-			Yakumi: "わさび",
-			Fish:   "まぐろの寿司",
-			Size:   8,
-			Weight: 50.0,
+			Number:  "1.",
+			Choices: "まぐろ",
+			Size:    8,
+			Weight:  50.0,
 		},
 		Wannwann: sushi.Sushi{
-			Yakumi: "ネギ",
-			Fish:   "かつおの寿司",
-			Size:   7,
-			Weight: 40.5,
+			Number:  "2.",
+			Choices: "かつお",
+			Size:    7,
+			Weight:  40.5,
 		},
 	}
 	if err := ebiten.RunGame(game); err != nil {
