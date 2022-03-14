@@ -70,14 +70,38 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		posY := i + 90
 		posX := i + 192
 		ka := k.String()
-		color := color.RGBA{
+		blue := color.RGBA{
 			R: 60,
 			G: 150,
 			B: 255,
 			A: 255,
 		}
-		text.Draw(screen, ka, mPlus1Regular_ttf, posY, posX, color)
+		text.Draw(screen, ka, mPlus1Regular_ttf, posY, posX, blue)
 	}
+	text.Draw(screen, "3+5=", mPlus1Regular_ttf, 0, 24, color.White)
+	if len(g.keys) > 0 {
+		answer := g.keys[0].String()
+		if answer == "Digit8" {
+			red := color.RGBA{
+				R: 255,
+				G: 100,
+				B: 60,
+				A: 255,
+			}
+			text.Draw(screen, "正解！", mPlus1Regular_ttf, 70, 55, red)
+			text.Draw(screen, "8", mPlus1Regular_ttf, 70, 24, color.White)
+		} else {
+			blue2 := color.RGBA{
+				R: 60,
+				G: 150,
+				B: 255,
+				A: 255,
+			}
+			text.Draw(screen, "残念！", mPlus1Regular_ttf, 70, 55, blue2)
+			text.Draw(screen, answer, mPlus1Regular_ttf, 70, 24, color.White)
+		}
+	}
+
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
