@@ -3,6 +3,7 @@ package main
 import (
 	"image/color"
 	"log"
+	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/examples/resources/fonts"
@@ -81,6 +82,11 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	text.Draw(screen, "3+5=", mPlus1Regular_ttf, 0, 24, color.White)
 	if len(g.keys) > 0 {
 		answer := g.keys[0].String()
+		s := answer
+		if strings.HasPrefix(s, "Digit") {
+			s = answer[5:]
+		}
+		text.Draw(screen, s, mPlus1Regular_ttf, 70, 24, color.White)
 		if answer == "Digit8" {
 			red := color.RGBA{
 				R: 255,
@@ -89,7 +95,6 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				A: 255,
 			}
 			text.Draw(screen, "正解！", mPlus1Regular_ttf, 70, 55, red)
-			text.Draw(screen, "8", mPlus1Regular_ttf, 70, 24, color.White)
 		} else {
 			blue2 := color.RGBA{
 				R: 60,
@@ -98,8 +103,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				A: 255,
 			}
 			text.Draw(screen, "残念！", mPlus1Regular_ttf, 70, 55, blue2)
-			text.Draw(screen, answer, mPlus1Regular_ttf, 70, 24, color.White)
 		}
+		text.Draw(screen, "FINAL ANAWER?", mPlus1Regular_ttf, 150, 230, color.White)
 	}
 
 }
