@@ -5,33 +5,33 @@ import (
 )
 
 type Sushi struct {
-	Yakumi string
-	Fish   string
-	Size   int
-	Weight float64
+	Number  string
+	Choices string
+	Size    int
+	Weight  float64
 }
 
 func (a *Sushi) Taberareru() string {
-	return fmt.Sprintf("%vと共に食べられた\n %v", a.Yakumi, a.Fish)
+	return fmt.Sprintf("%v%v\n\n", a.Number, a.Choices)
 }
 
 func (b *Sushi) mawattekuru() string {
-	return fmt.Sprintf("%v流れていった\n %v", b.Yakumi, b.Fish)
+	return fmt.Sprintf("%v流れていった\n %v", b.Number, b.Choices)
 }
 
 func main() {
 	x := Sushi{
-		Yakumi: "わさび",
-		Fish:   "まぐろの寿司",
-		Size:   8,
-		Weight: 50.0,
+		Number:  "わさび",
+		Choices: "まぐろ",
+		Size:    8,
+		Weight:  50.0,
 	}
 
 	y := Sushi{
-		Yakumi: "ネギ",
-		Fish:   "かつおの寿司",
-		Size:   7,
-		Weight: 40.5,
+		Number:  "ネギ",
+		Choices: "かつお",
+		Size:    7,
+		Weight:  40.5,
 	}
 
 	x.Taberareru()

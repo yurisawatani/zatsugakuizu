@@ -1,11 +1,11 @@
-package tyoco
+package choco
 
-type Tyoco struct {
+type Choco struct {
 	Question string
 	Answer   string
 }
 
-var Xlist = []Tyoco{
+var Xlist = []Choco{
 	{
 		Question: "4+5=",
 		Answer:   "9",
