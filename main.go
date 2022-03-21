@@ -9,7 +9,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/examples/resources/fonts"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
-	"github.com/yurisawatani/zatsugakuizu/sushi"
+	"github.com/yurisawatani/zatsugakuizu/tyoco"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/opentype"
 )
@@ -40,36 +40,36 @@ func init() {
 }
 
 type Game struct {
-	Nyannchudanyan sushi.Sushi
-	Wannwann       sushi.Sushi
 	Msg            string
 	count          int
 	Witch          bool
 	keys           []ebiten.Key
+	timeover       bool
+	Questionlist   []tyoco.Tyoco
+	Questionnumber uint
 }
 
 func (g *Game) Update() error {
 	g.keys = inpututil.AppendPressedKeys(g.keys[:0])
 	g.count = g.count + 1
-	if g.count < 60 {
+	if g.count < 180 {
 		return nil
 	}
 	g.count = 0
-	if g.Witch {
-		g.Witch = false
-		g.Msg = g.Nyannchudanyan.Taberareru()
+	if g.timeover {
+		g.timeover = false
+		g.Msg = ""
 	} else {
-		g.Witch = true
-		g.Msg = g.Wannwann.Taberareru()
+		g.timeover = true
+		g.Msg = ""
 	}
 	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	text.Draw(screen, g.Msg, mPlus1Regular_ttf, 60, 120, color.White)
 	for i, k := range g.keys {
-		posY := i + 90
-		posX := i + 192
+		posY := i + 78
+		posX := i + 168
 		ka := k.String()
 		blue := color.RGBA{
 			R: 60,
@@ -79,15 +79,19 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		}
 		text.Draw(screen, ka, mPlus1Regular_ttf, posY, posX, blue)
 	}
-	text.Draw(screen, "3+5=", mPlus1Regular_ttf, 0, 24, color.White)
+	t := g.Questionlist[g.Questionnumber]
+	q := t.Question
+	a := t.Answer
+	text.Draw(screen, q, mPlus1Regular_ttf, 0, 24, color.White)
 	if len(g.keys) > 0 {
-		answer := g.keys[0].String()
-		s := answer
+		akey := g.keys[0]
+		s := akey.String()
 		if strings.HasPrefix(s, "Digit") {
-			s = answer[5:]
+			s = s[5:]
 		}
 		text.Draw(screen, s, mPlus1Regular_ttf, 70, 24, color.White)
-		if answer == "Digit8" {
+		if s == a {
+			g.Questionnumber = g.Questionnumber + 1
 			red := color.RGBA{
 				R: 255,
 				G: 100,
@@ -104,7 +108,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			}
 			text.Draw(screen, "残念！", mPlus1Regular_ttf, 70, 55, blue2)
 		}
-		text.Draw(screen, "FINAL ANAWER?", mPlus1Regular_ttf, 150, 230, color.White)
+		text.Draw(screen, "FINAL ANSWER?", mPlus1Regular_ttf, 150, 230, color.White)
 	}
 
 }
@@ -116,20 +120,7 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 func main() {
 	ebiten.SetWindowSize(yoko*100, tate*100)
 	ebiten.SetWindowTitle("雑学")
-	game := &Game{
-		Nyannchudanyan: sushi.Sushi{
-			Number:  "1.",
-			Choices: "まぐろ",
-			Size:    8,
-			Weight:  50.0,
-		},
-		Wannwann: sushi.Sushi{
-			Number:  "2.",
-			Choices: "かつお",
-			Size:    7,
-			Weight:  40.5,
-		},
-	}
+	game := &Game{}
 	if err := ebiten.RunGame(game); err != nil {
 		log.Fatal(err)
 	}
