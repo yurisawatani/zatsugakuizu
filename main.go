@@ -67,17 +67,10 @@ func (g *Game) Update() error {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	for i, k := range g.keys {
-		posY := i + 78
-		posX := i + 168
-		ka := k.String()
-		blue := color.RGBA{
-			R: 60,
-			G: 150,
-			B: 255,
-			A: 255,
-		}
-		text.Draw(screen, ka, mPlus1Regular_ttf, posY, posX, blue)
+	k := len(g.Questionlist)
+	if g.Questionnumber == uint(k) {
+		text.Draw(screen, "全問正解！！", mPlus1Regular_ttf, 70, 100, color.White)
+		return
 	}
 	t := g.Questionlist[g.Questionnumber]
 	q := t.Question
@@ -89,7 +82,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		if strings.HasPrefix(s, "Digit") {
 			s = s[5:]
 		}
-		text.Draw(screen, s, mPlus1Regular_ttf, 70, 24, color.White)
+		text.Draw(screen, s, mPlus1Regular_ttf, 70, 100, color.White)
 		if s == a {
 			g.Questionnumber = g.Questionnumber + 1
 			red := color.RGBA{
@@ -106,7 +99,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				B: 255,
 				A: 255,
 			}
-			text.Draw(screen, "残念！", mPlus1Regular_ttf, 70, 55, blue2)
+			text.Draw(screen, "残念！", mPlus1Regular_ttf, 70, 130, blue2)
 		}
 		text.Draw(screen, "FINAL ANSWER?", mPlus1Regular_ttf, 150, 230, color.White)
 	}

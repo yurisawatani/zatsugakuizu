@@ -15,15 +15,11 @@ var Xlist = []Choco{
 		Answer:   "9",
 	},
 	{
-		Question: "私の誕生月は？",
+		Question: "1-1=？",
 		Answer:   "0",
 	},
 	{
-		Question: "私は2022年4月に\n中学何年生になる？",
+		Question: "1+2=？",
 		Answer:   "3",
-	},
-	{
-		Question: "全問正解！！",
-		Answer:   "Enter",
 	},
 }
