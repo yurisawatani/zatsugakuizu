@@ -120,7 +120,9 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 func main() {
 	ebiten.SetWindowSize(yoko*100, tate*100)
 	ebiten.SetWindowTitle("雑学")
-	game := &Game{}
+	game := &Game{
+		Questionlist: choco.Xlist,
+	}
 	if err := ebiten.RunGame(game); err != nil {
 		log.Fatal(err)
 	}
