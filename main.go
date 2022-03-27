@@ -69,7 +69,13 @@ func (g *Game) Update() error {
 func (g *Game) Draw(screen *ebiten.Image) {
 	k := len(g.Questionlist)
 	if g.Questionnumber == uint(k) {
-		text.Draw(screen, "全問正解！！", mPlus1Regular_ttf, 70, 100, color.White)
+		yelow := color.RGBA{
+			R: 255,
+			G: 255,
+			B: 60,
+			A: 255,
+		}
+		text.Draw(screen, "全問正解！！", mPlus1Regular_ttf, 130, 100, yelow)
 		return
 	}
 	t := g.Questionlist[g.Questionnumber]
