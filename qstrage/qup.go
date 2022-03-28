@@ -2,8 +2,12 @@ package qstrage
 
 import (
 	"context"
+	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
+	"os"
+	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -38,6 +42,21 @@ func WhiteFile(ctx context.Context, s3path string, content io.Reader) error {
 	return nil
 }
 
+func readJson(filepath string) (string, error) {
+	log.Println("Loading json:", filepath)
+	bs, err := ioutil.ReadFile(filepath)
+	if err != nil {
+		return "", fmt.Errorf("Failed to open file: %s: %v\n", filepath, err)
+	}
+	return string(bs), nil
+}
+
 func main() {
-	ssss
+	filepath := os.Args[1]
+	jstr, err := readJson(filepath)
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
+	ctx := context.Background()
+	WhiteFile(ctx, filepath, strings.NewReader(jstr))
 }
