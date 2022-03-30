@@ -6,8 +6,6 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
-	"os"
-	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -42,21 +40,28 @@ func WhiteFile(ctx context.Context, s3path string, content io.Reader) error {
 	return nil
 }
 
-func readJson(filepath string) (string, error) {
+func ReadJson(filepath string) (string, error) {
 	log.Println("Loading json:", filepath)
 	bs, err := ioutil.ReadFile(filepath)
 	if err != nil {
-		return "", fmt.Errorf("Failed to open file: %s: %v\n", filepath, err)
+		return "", fmt.Errorf("failed to open file: %s: %v", filepath, err)
 	}
 	return string(bs), nil
 }
 
-func main() {
-	filepath := os.Args[1]
-	jstr, err := readJson(filepath)
+func ReadFile(ctx context.Context, s3path string) (*io.ReadCloser, error) {
+	log.Printf("Reading S3 file: %s%s", BucketName, s3path)
+	client, err := GetClient(ctx)
 	if err != nil {
-		log.Fatalf("%v", err)
+		return nil, err
 	}
-	ctx := context.Background()
-	WhiteFile(ctx, filepath, strings.NewReader(jstr))
+	obj := &s3.GetObjectInput{
+		Bucket: aws.String(BucketName),
+		Key:    aws.String(s3path),
+	}
+	out, err := client.GetObject(ctx, obj)
+	if err != nil {
+		return nil, err
+	}
+	return &out.Body, nil
 }
