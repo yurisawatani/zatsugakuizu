@@ -72,6 +72,18 @@ func UpdateStage(g *Game) error {
 			}
 			g.QuestionlistC = listC
 		}
+		if s == "2" {
+			data, err := qstrage.ReadJson("cmd/upload/monndai.json")
+			if err != nil {
+				log.Fatal(err)
+			}
+			var listC []QAP
+			json.Unmarshal([]byte(data), &listC)
+			if err := json.Unmarshal([]byte(data), &listC); err != nil {
+				log.Fatal(err)
+			}
+			g.QuestionlistC = listC
+		}
 		return nil
 	}
 	return nil
