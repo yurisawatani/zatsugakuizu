@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"image/color"
 	"log"
 	"strings"
@@ -25,7 +26,7 @@ func init() {
 		log.Fatal(err)
 	}
 	ft, err := opentype.NewFace(tt, &opentype.FaceOptions{
-		Size:    24,
+		Size:    20,
 		DPI:     72,
 		Hinting: font.HintingFull,
 	})
@@ -61,31 +62,28 @@ func UpdateStage(g *Game) error {
 		akey := g.keys[0]
 		s := strings.TrimPrefix(akey.String(), "Digit")
 		if s == "1" {
-			data, err := qstrage.ReadJson("cmd/upload/monndai.json")
-			if err != nil {
-				log.Fatal(err)
-			}
-			var listC []QAP
-			json.Unmarshal([]byte(data), &listC)
-			if err := json.Unmarshal([]byte(data), &listC); err != nil {
-				log.Fatal(err)
-			}
-			g.QuestionlistC = listC
+			return g.readQuestion("monndai")
 		}
 		if s == "2" {
-			data, err := qstrage.ReadJson("cmd/upload/monndai.json")
-			if err != nil {
-				log.Fatal(err)
-			}
-			var listC []QAP
-			json.Unmarshal([]byte(data), &listC)
-			if err := json.Unmarshal([]byte(data), &listC); err != nil {
-				log.Fatal(err)
-			}
-			g.QuestionlistC = listC
+			return g.readQuestion("question")
 		}
 		return nil
 	}
+	return nil
+}
+
+func (g *Game) readQuestion(name string) error {
+	path := fmt.Sprintf("cmd/upload/%s.json", name)
+	data, err := qstrage.ReadJson(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var listC []QAP
+	json.Unmarshal([]byte(data), &listC)
+	if err := json.Unmarshal([]byte(data), &listC); err != nil {
+		log.Fatal(err)
+	}
+	g.QuestionlistC = listC
 	return nil
 }
 
@@ -99,7 +97,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		DrawQuestion(g, screen)
 		return
 	}
-	text.Draw(screen, "ざつがくいず!!\n\nstage 1 --1\n\nstage 2 --2", mPlus1Regular_ttf, 10, 50, color.White)
+	text.Draw(screen, "ざつがくいず!!\n\nstage 1 --1\n雑学\n\nstage 2 --2\n日本史", mPlus1Regular_ttf, 10, 50, color.White)
 }
 
 func DrawQuestion(g *Game, screen *ebiten.Image) {
