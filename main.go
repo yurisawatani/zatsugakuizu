@@ -109,7 +109,18 @@ func DrawQuestion(g *Game, screen *ebiten.Image) {
 			B: 60,
 			A: 255,
 		}
-		text.Draw(screen, "全問正解！！", mPlus1Regular_ttf, 130, 100, yelow)
+		if len(g.keys) > 0 {
+			akey := g.keys[0]
+			s := strings.TrimPrefix(akey.String(), "Digit")
+			if s == "1" {
+				g.QuestionnumberC = 0
+			}
+			if s == "2" {
+				log.Fatal()
+			}
+			return
+		}
+		text.Draw(screen, "全問正解！！\n\ntopへ・1\n終了・2", mPlus1Regular_ttf, 130, 100, yelow)
 		return
 	}
 	t := g.QuestionlistC[g.QuestionnumberC]
@@ -131,8 +142,16 @@ func DrawQuestion(g *Game, screen *ebiten.Image) {
 			}
 			text.Draw(screen, "残念！", mPlus1Regular_ttf, 70, 180, blue2)
 		}
+		if s == "8" {
+			g.QuestionlistC = nil
+			return
+		}
 		text.Draw(screen, "FINAL ANSWER?", mPlus1Regular_ttf, 150, 230, color.White)
 	}
+}
+
+func Draw(screen *ebiten.Image) {
+	panic("unimplemented")
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
