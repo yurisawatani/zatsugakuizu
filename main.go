@@ -144,6 +144,7 @@ func DrawQuestion(g *Game, screen *ebiten.Image) {
 		}
 		if s == "8" {
 			g.QuestionlistC = nil
+			g.QuestionnumberC = 0
 			return
 		}
 		text.Draw(screen, "FINAL ANSWER?", mPlus1Regular_ttf, 150, 230, color.White)
