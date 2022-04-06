@@ -67,6 +67,9 @@ func UpdateStage(g *Game) error {
 		if s == "2" {
 			return g.readQuestion("question")
 		}
+		if s == "0" {
+			return g.readQuestion("stage")
+		}
 		return nil
 	}
 	return nil
@@ -97,7 +100,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		DrawQuestion(g, screen)
 		return
 	}
-	text.Draw(screen, "ざつがくいず!!\n\nstage 1 --1\n雑学\n\nstage 2 --2\n日本史", mPlus1Regular_ttf, 10, 50, color.White)
+	text.Draw(screen, "ざつがくいず!!\n\nstage 1 --1\n雑学\n\nstage 2 --2\n日本史\n\n\n\nstage 0 --0\n漫画", mPlus1Regular_ttf, 10, 50, color.White)
 }
 
 func DrawQuestion(g *Game, screen *ebiten.Image) {
@@ -135,7 +138,7 @@ func DrawQuestion(g *Game, screen *ebiten.Image) {
 	if len(g.keys) > 0 {
 		akey := g.keys[0]
 		s := strings.TrimPrefix(akey.String(), "Digit")
-		text.Draw(screen, s, mPlus1Regular_ttf, 85, 195, color.White)
+		text.Draw(screen, s, mPlus1Regular_ttf, 85, 255, color.White)
 		if s == a {
 			g.QuestionnumberC = g.QuestionnumberC + 1
 		} else {
@@ -145,14 +148,14 @@ func DrawQuestion(g *Game, screen *ebiten.Image) {
 				B: 255,
 				A: 255,
 			}
-			text.Draw(screen, "残念！", mPlus1Regular_ttf, 150, 195, blue2)
+			text.Draw(screen, "残念！", mPlus1Regular_ttf, 150, 255, blue2)
 		}
 		if s == "8" {
 			g.QuestionlistC = nil
 			g.QuestionnumberC = 0
 			return
 		}
-		text.Draw(screen, "FINAL ANSWER?", mPlus1Regular_ttf, 220, 195, color.White)
+		text.Draw(screen, "FINAL ANSWER?", mPlus1Regular_ttf, 220, 255, color.White)
 	}
 }
 
