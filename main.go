@@ -67,7 +67,7 @@ func UpdateStage(g *Game) error {
 		if s == "2" {
 			return g.readQuestion("question")
 		}
-		if s == "0" {
+		if s == "Slash" {
 			return g.readQuestion("stage")
 		}
 		return nil
@@ -100,7 +100,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		DrawQuestion(g, screen)
 		return
 	}
-	text.Draw(screen, "ざつがくいず!!\n\nstage 1 --1\n雑学\n\nstage 2 --2\n日本史\n\n\n\nstage 0 --0\n漫画", mPlus1Regular_ttf, 10, 50, color.White)
+	text.Draw(screen, "ざつがくいず!!\n\nstage 1 --1\n雑学\n\nstage 2 --2\n日本史\n\n\n\nstage 0 --Slash\n漫画", mPlus1Regular_ttf, 10, 50, color.White)
 }
 
 func DrawQuestion(g *Game, screen *ebiten.Image) {
