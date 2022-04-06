@@ -135,7 +135,7 @@ func DrawQuestion(g *Game, screen *ebiten.Image) {
 	if len(g.keys) > 0 {
 		akey := g.keys[0]
 		s := strings.TrimPrefix(akey.String(), "Digit")
-		text.Draw(screen, s, mPlus1Regular_ttf, 5, 180, color.White)
+		text.Draw(screen, s, mPlus1Regular_ttf, 85, 195, color.White)
 		if s == a {
 			g.QuestionnumberC = g.QuestionnumberC + 1
 		} else {
@@ -145,14 +145,14 @@ func DrawQuestion(g *Game, screen *ebiten.Image) {
 				B: 255,
 				A: 255,
 			}
-			text.Draw(screen, "残念！", mPlus1Regular_ttf, 70, 180, blue2)
+			text.Draw(screen, "残念！", mPlus1Regular_ttf, 150, 195, blue2)
 		}
 		if s == "8" {
 			g.QuestionlistC = nil
 			g.QuestionnumberC = 0
 			return
 		}
-		text.Draw(screen, "FINAL ANSWER?", mPlus1Regular_ttf, 150, 230, color.White)
+		text.Draw(screen, "FINAL ANSWER?", mPlus1Regular_ttf, 220, 195, color.White)
 	}
 }
 
@@ -174,7 +174,7 @@ func main() {
 	if err := json.Unmarshal([]byte(data), &listC); err != nil {
 		log.Fatal(err)
 	}
-	ebiten.SetWindowSize(800, 500)
+	ebiten.SetWindowSize(800, 600)
 	ebiten.SetWindowTitle("クイズ")
 	gameC := &Game{}
 	if err := ebiten.RunGame(gameC); err != nil {
