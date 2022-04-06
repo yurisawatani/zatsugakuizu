@@ -118,9 +118,14 @@ func DrawQuestion(g *Game, screen *ebiten.Image) {
 			if s == "2" {
 				log.Fatal()
 			}
+			if s == "8" {
+				g.QuestionlistC = nil
+				g.QuestionnumberC = 0
+				return
+			}
 			return
 		}
-		text.Draw(screen, "全問正解！！\n\ntopへ・1\n終了・2", mPlus1Regular_ttf, 130, 100, yelow)
+		text.Draw(screen, "全問正解！！\n\ntopへ・8\n1問目へ・1\n終了・2", mPlus1Regular_ttf, 130, 100, yelow)
 		return
 	}
 	t := g.QuestionlistC[g.QuestionnumberC]
