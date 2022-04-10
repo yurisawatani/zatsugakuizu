@@ -53,7 +53,7 @@ func (g *Game) Update() error {
 	if len(g.QuestionlistC) == 0 {
 		return UpdateStage(g)
 	} else {
-		return UpdateQuestion(g)
+		return nil
 	}
 }
 
@@ -90,17 +90,13 @@ func (g *Game) readQuestion(name string) error {
 	return nil
 }
 
-func UpdateQuestion(g *Game) error {
-	return nil
-}
-
 func (g *Game) Draw(screen *ebiten.Image) {
 	k := len(g.QuestionlistC)
 	if k > 0 {
 		DrawQuestion(g, screen)
 		return
 	}
-	text.Draw(screen, "ざつがくいず!!\n\nstage 1 --1\n雑学\n\nstage 2 --2\n日本史\n\n\n\nstage 0 --Slash\n漫画", mPlus1Regular_ttf, 10, 50, color.White)
+	text.Draw(screen, "ざつがくいず!!\n\nstage 1 --1\n雑学\n\nstage 2 --2\n日本史\n\n\n\nstage 0 --\n漫画", mPlus1Regular_ttf, 10, 50, color.White)
 }
 
 func DrawQuestion(g *Game, screen *ebiten.Image) {
